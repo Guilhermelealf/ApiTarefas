@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using ApiTarefas.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Teste.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
-namespace ApiTarefas.Data
+namespace Teste.Data
 {
     public class TarefaDbContext : IdentityDbContext<IdentityUser>
     {

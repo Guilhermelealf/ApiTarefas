@@ -1,4 +1,4 @@
-﻿using ApiTarefas.Models;
+﻿using Teste.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ApiTarefas.Controllers
+namespace Teste.Controllers
 {
     [ApiController]
     [Route("api/conta")]

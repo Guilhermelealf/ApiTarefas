@@ -1,4 +1,4 @@
-﻿namespace ApiTarefas.Models
+﻿namespace Teste.Models
 {
     public class JwtSettings
     {

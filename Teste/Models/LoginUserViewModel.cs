@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ApiTarefas.Models
+namespace Teste.Models
 {
     public class LoginUserViewModel
     {

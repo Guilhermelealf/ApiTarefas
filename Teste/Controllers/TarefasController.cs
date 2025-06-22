@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ApiTarefas.Models;
-using System.Collections.Generic;
-using System.Linq;
-using ApiTarefas.Data;
-using System.Threading.Tasks;
+using Teste.Models;
+using Teste.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
-namespace ApiTarefas.Controllers
+namespace Teste.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/tarefas")]
     public class TarefasController : ControllerBase
@@ -21,14 +20,25 @@ namespace ApiTarefas.Controllers
         }
         
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<Tarefa>>> GetTarefas()
         {
+            if(_context.Tarefa == null) return NotFound();
+            
             return await _context.Tarefa.ToListAsync();
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Tarefa>> GetTarefa(int id)
         {
+            if (_context.Tarefa == null) return NotFound();
+
             var tarefa = await _context.Tarefa.FindAsync(id);
 
             if (tarefa == null) return NotFound();
@@ -37,16 +47,32 @@ namespace ApiTarefas.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<Tarefa>>> PostTarefas(int id, Tarefa tarefa)
         {
-            _context.Tarefa.Add(tarefa);
+            if (_context.Tarefa == null) return Problem("Erro ao criar um produto, contate o suporte");
 
+            if (!ModelState.IsValid)
+            {
+                return ValidationProblem(new ValidationProblemDetails(ModelState)
+                {
+                    Title = "Um ou mais erros de validação ocorreram!"
+                });
+            }
+
+            _context.Tarefa.Add(tarefa);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetTarefas), new {id = tarefa.Id}, tarefa);
         }
 
         [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> PutTarefa(int id, Tarefa tarefa)
         {
             if(id != tarefa.Id) return BadRequest();
@@ -73,6 +99,9 @@ namespace ApiTarefas.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteTarefa(int id)
         {
             var tarefa = await _context.Tarefa.FindAsync(id);

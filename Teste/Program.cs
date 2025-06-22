@@ -1,11 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Teste.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Teste.Models;
-using Microsoft.OpenApi.Models;
 using Teste.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
